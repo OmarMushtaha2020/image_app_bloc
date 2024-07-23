@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
-import 'package:image_app/bloc_app/wallpaper/bloc.dart';
-import 'package:image_app/bloc_app/wallpaper/event.dart';
-import 'package:image_app/bloc_app/wallpaper/state.dart';
+import 'package:image_app/bloc_app/wallpaper_bloc/bloc.dart';
+import 'package:image_app/bloc_app/wallpaper_bloc/event.dart';
+import 'package:image_app/bloc_app/wallpaper_bloc/state.dart';
 
 class SetWallpaperScreen extends StatelessWidget {
   @override
