@@ -13,25 +13,30 @@ class WallpaperBloc extends Bloc<WallpaperEvent, WallpaperState> {
   @override
   Stream<WallpaperState> mapEventToState(WallpaperEvent event) async* {
     if (event is SetAsWallpaper) {
-      yield* ImageWallpaperManager(event.pathImage??"");
+      yield* _mapImageWallpaperManager(event.pathImage??"");
     }
   }
 
-  Stream<WallpaperState> ImageWallpaperManager(String image) async* {
+  Stream<WallpaperState> _mapImageWallpaperManager(String image) async* {
     try{
-      int location = WallpaperManager.LOCK_SCREEN; //can be Home/Lo
-      int locations = WallpaperManager.HOME_SCREEN; //can be Home/Lo
-
-      var files = await DefaultCacheManager().getSingleFile(image); // ck Screen
-      bool result =
-      await WallpaperManager.setWallpaperFromFile(files.path, location); //
-      bool results =
-      await WallpaperManager.setWallpaperFromFile(files.path, locations); //
-      yield  SetAsWallpaperSuccessfully();
+      await imageWallpaperManager(image);
+      yield SetAsWallpaperSuccessfully();
     }catch(error){
       yield SetAsWallpaperFailed(error.toString());
+
     }
 
-  }
 
+  }
+ Future<void> imageWallpaperManager(String image) async {
+     int location = WallpaperManager.LOCK_SCREEN; //can be Home/Lo
+     int locations = WallpaperManager.HOME_SCREEN; //can be Home/Lo
+
+     var files = await DefaultCacheManager().getSingleFile(image); // ck Screen
+     bool result =
+         await WallpaperManager.setWallpaperFromFile(files.path, location); //
+     bool results =
+         await WallpaperManager.setWallpaperFromFile(files.path, locations); //
+
+ }
 }

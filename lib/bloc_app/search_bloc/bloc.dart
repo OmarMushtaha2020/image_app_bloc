@@ -14,23 +14,28 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {
     if (event is BringImage) {
-       yield* bringImagesByName(event.name!);
+       yield* _mapBringImagesByName(event.name!);
     }
   }
   ImageModel?  searchModel;
 
-  Stream<SearchState> bringImagesByName(String name)async*{
-    try {
+  Stream<SearchState> _mapBringImagesByName(String name)async*{
+try{
+  bringImagesByName(name);
+  yield BringImageSuccessfully();
+}catch(error){
+  yield BringImageFailed(error.toString());
+
+}
+
+  }
+  Future<void> bringImagesByName(String name) async {
       var url="https://pixabay.com/api/?key=27603626-a8f0e0309584dcbe49b80be6c&q=$name&image_type=photo";
       var response=await http.get(Uri.parse(url));
       var jsonResponse=await convert.jsonDecode(response.body);
       searchModel= ImageModel.fromJson(jsonResponse);
-      yield BringImageSuccessfully();
-    }catch (error) {
-      yield BringImageFailed(error.toString());
-
-    }
 
 
   }
 }
+

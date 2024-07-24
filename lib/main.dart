@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_app/bloc_app/home_bloc/bloc.dart';
 import 'package:image_app/bloc_app/home_bloc/event.dart';
+import 'package:image_app/shared/bloc_observer/bloc_observer.dart';
 
 import 'shared/route/app_route.dart';
 
 void main() {
+  Bloc.observer = BlocObserverToApp();
 
   runApp(BlocProvider(
     create: (context) => HomeBloc()..add(GetAllImages()),

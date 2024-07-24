@@ -8,28 +8,33 @@ import 'state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(InitialState());
+
   static HomeBloc get(context) => BlocProvider.of(context);
 
   ImageModel? imageModel;
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    if (event is  GetAllImages) {
-      yield* getAllImage();
+    if (event is GetAllImages) {
+      yield* _mapGetAllImage();
     }
   }
-  Stream<HomeState> getAllImage() async* {
+
+  Stream<HomeState> _mapGetAllImage() async* {
     try {
-      var url = "https://pixabay.com/api/?key=27603626-a8f0e0309584dcbe49b80be6c&q=yellow+flowers&image_type=photo";
-      var response = await http.get(Uri.parse(url));
-      var jsonResponse = convert.jsonDecode(response.body);
-      imageModel = ImageModel.fromJson(jsonResponse);
-      print("ysuyd${imageModel?.hits?[0].pageURL}");
+      await getAllImage();
       yield GetAllImagesSucceed();
     } catch (error) {
       yield GetAllImagesFailed(error.toString());
     }
   }
 
+  Future<void> getAllImage() async {
+    var url = "https://pixabay.com/api/?key=27603626-a8f0e0309584dcbe49b80be6c&q=yellow+flowers&image_type=photo";
+    var response = await http.get(Uri.parse(url));
 
+    var jsonResponse = convert.jsonDecode(response.body);
+    imageModel = ImageModel.fromJson(jsonResponse);
+    print("ysuyd${imageModel?.hits?[0].pageURL}");
+  }
 }
